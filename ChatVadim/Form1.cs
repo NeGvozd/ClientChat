@@ -34,7 +34,7 @@ namespace ChatVadim
         cleaner Cleaner;
         private Socket _serverSocket;
         private Thread _clientThread;
-        private string _serverHost = "25.60.255.151";
+        private string _serverHost = "127.0.0.1";
         private const int _serverPort = 2048;
         public Form1()
         {
@@ -50,13 +50,13 @@ namespace ChatVadim
             //_clientThread.Start();
         }
 
-        private void listner()
+        private void listner() //"отловка" сообщений
         {
             while (_serverSocket.Connected)
             {
                 byte[] buffer = new byte[8196];
                 int bytesRec = _serverSocket.Receive(buffer);
-                string data = Encoding.UTF8.GetString(buffer, 0, bytesRec);
+                string data = Encoding.UTF8.GetString(buffer, 0, bytesRec); //переделываем полученный байт массив в читаемую строку
                 if (data.Contains("#updatechat"))
                 {
                     UpdateChat(data);
@@ -120,7 +120,7 @@ namespace ChatVadim
             catch(Exception exp) { onlineBox.Text = exp.ToString(); }
         }
 
-        private void send(string data)
+        private void send(string data) // отправка байтового массива
         {
             try
             {
@@ -157,7 +157,7 @@ namespace ChatVadim
         }
 
         private void enterChat_Click(object sender, EventArgs e)
-        {            
+        {            //при подключении создаем поток для отловки, отправляем на сервер сообщение с тегом о новом клиенте
             _serverHost = server_address.Text;
             connect();
             _clientThread = new Thread(listner);
@@ -191,10 +191,11 @@ namespace ChatVadim
                 if (string.IsNullOrEmpty(data)) return;
                 if (!data.Contains("#personally"))
                     send("#newmsg&" + data);
-                else
+                else //если отправляем персональное сообщение - прописываем его искуственно у себя
                 {
-                    // UdpClient udpClient = new UdpClient()
+                    chatBox.Text +=Environment.NewLine + "[" + userName.Text + "]:(personally)" + data.Split(')')[1];
                     send(data);
+                    chat_listbox.Items.Add(userName.Text);
                 }
                 chat_msg.Text = string.Empty;
             }
@@ -280,6 +281,21 @@ namespace ChatVadim
                 chat_msg.Location = new Point(chat_msg.Location.X, chat_msg.Location.Y + 50);
                 chat_msg.Height -= 50;
                 chatBox.Height += 50;
+            }
+        }
+
+        private void chatBox_TextChanged(object sender, EventArgs e)
+        {
+            var start = chatBox.Text.IndexOf('[', 0);
+            var end = chatBox.Text.IndexOf(']', 0);
+            chatBox.Select(start+1, end-1);
+            chatBox.SelectionColor = Color.Green;
+            while (start >-1)
+            {
+                start = chatBox.Text.IndexOf('[', start+1);
+                end = chatBox.Text.IndexOf(']', end+1);
+                chatBox.Select(start + 1, end-start - 1);
+                    chatBox.SelectionColor = Color.Green;
             }
         }
     }

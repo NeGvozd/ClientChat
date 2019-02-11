@@ -83,7 +83,7 @@
             // 
             this.server_address.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.server_address.Name = "server_address";
-            this.server_address.Size = new System.Drawing.Size(150, 25);
+            this.server_address.Size = new System.Drawing.Size(100, 25);
             this.server_address.Text = "25.60.255.151";
             // 
             // toolStripLabel1
@@ -95,7 +95,7 @@
             // 
             // userName
             // 
-            this.userName.BackColor = System.Drawing.SystemColors.Info;
+            this.userName.BackColor = System.Drawing.SystemColors.Window;
             this.userName.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.userName.Name = "userName";
             this.userName.Size = new System.Drawing.Size(100, 25);
@@ -160,7 +160,7 @@
             // 
             // chat_listbox
             // 
-            this.chat_listbox.BackColor = System.Drawing.Color.White;
+            this.chat_listbox.BackColor = System.Drawing.SystemColors.Control;
             this.chat_listbox.Dock = System.Windows.Forms.DockStyle.Left;
             this.chat_listbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.chat_listbox.FormattingEnabled = true;
@@ -176,9 +176,9 @@
             this.chatBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.chatBox.BackColor = System.Drawing.Color.LightGray;
+            this.chatBox.BackColor = System.Drawing.Color.White;
             this.chatBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.chatBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.chatBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.chatBox.Location = new System.Drawing.Point(241, 25);
             this.chatBox.Margin = new System.Windows.Forms.Padding(0);
             this.chatBox.Name = "chatBox";
@@ -186,6 +186,7 @@
             this.chatBox.Size = new System.Drawing.Size(559, 396);
             this.chatBox.TabIndex = 2;
             this.chatBox.Text = "";
+            this.chatBox.TextChanged += new System.EventHandler(this.chatBox_TextChanged);
             this.chatBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chatBox_KeyDown);
             // 
             // chat_msg
@@ -196,7 +197,7 @@
             this.chat_msg.BackColor = System.Drawing.Color.Gainsboro;
             this.chat_msg.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.chat_msg.EnableAutoDragDrop = true;
-            this.chat_msg.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.chat_msg.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.chat_msg.Location = new System.Drawing.Point(241, 419);
             this.chat_msg.Multiline = false;
             this.chat_msg.Name = "chat_msg";
@@ -228,10 +229,12 @@
             this.onlineBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.onlineBox.Dock = System.Windows.Forms.DockStyle.Right;
             this.onlineBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.onlineBox.ForeColor = System.Drawing.Color.Black;
             this.onlineBox.Location = new System.Drawing.Point(800, 25);
             this.onlineBox.Margin = new System.Windows.Forms.Padding(0);
             this.onlineBox.Name = "onlineBox";
             this.onlineBox.ReadOnly = true;
+            this.onlineBox.ShortcutsEnabled = false;
             this.onlineBox.Size = new System.Drawing.Size(150, 425);
             this.onlineBox.TabIndex = 5;
             this.onlineBox.Text = "Online:";
