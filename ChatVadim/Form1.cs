@@ -43,7 +43,6 @@ namespace ChatVadim
             Cleaner = new cleaner(clearChat);
             chat_msg.Enabled = false;
             chat_send.Enabled = false;
-            chat_listbox.Enabled = false;
             //connect();
             //_clientThread = new Thread(listner);
             //_clientThread.IsBackground = true;
@@ -104,7 +103,7 @@ namespace ChatVadim
                 try
                 {
                     if (string.IsNullOrEmpty(messages[i])) continue;
-                    print(String.Format("[{0}]:{1}.", messages[i].Split('~')[0], messages[i].Split('~')[1]));
+                    print(String.Format("[{0}]:{1}", messages[i].Split('~')[0], messages[i].Split('~')[1]));
                 }
                 catch { continue; }
             }
@@ -115,7 +114,7 @@ namespace ChatVadim
             {
                 string[] online_users = users.Split('&')[1].Split('|');
                 //onlineBox.Text = online_users.ToString();
-                onlineBox.Invoke(new Action(() => onlineBox.Text ="Online: \n" + string.Join("\n", online_users)));
+                onlineBox.Invoke(new Action(() => onlineBox.Text =string.Join("\n", online_users)));
             }
             catch(Exception exp) { onlineBox.Text = exp.ToString(); }
         }
@@ -149,6 +148,7 @@ namespace ChatVadim
         {
             //chat_listbox.Items.Insert(0, "New connection");
             //chat_listbox.SelectedIndex = 0;
+            chatBox.Text = null;
         }
 
         private void exit_button_Click(object sender, EventArgs e)
@@ -174,13 +174,12 @@ namespace ChatVadim
             enterChat.Enabled = false;
             server_address.Enabled = false;
             connection_count++;
-            chat_listbox.Items.Insert(connection_count, _serverHost);
-            chat_listbox.SelectedIndex = connection_count;
         }
 
         private void chat_send_Click(object sender, EventArgs e)
         {
             sendMessage();
+            chat_msg.Text = null;
         }
 
         private void sendMessage()
@@ -193,9 +192,8 @@ namespace ChatVadim
                     send("#newmsg&" + data);
                 else //если отправляем персональное сообщение - прописываем его искуственно у себя
                 {
-                    chatBox.Text +=Environment.NewLine + "[" + userName.Text + "]:(personally)" + data.Split(')')[1];
-                    send(data);
-                    chat_listbox.Items.Add(userName.Text);
+                    print(string.Format("[{0}]:{1}", userName.Text, data.Split('@')[1]));
+                    send(data);                  
                 }
                 chat_msg.Text = string.Empty;
             }
@@ -204,13 +202,16 @@ namespace ChatVadim
 
         private void chatBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyData == Keys.Enter)
+            if (e.Control && e.KeyCode == Keys.Enter)
+            {
                 sendMessage();
+                chat_msg.Text = "";
+            }
         }
 
         private void chat_msg_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyData == Keys.Enter)
+            if (e.Control && e.KeyCode == Keys.Enter)
                 sendMessage();
         }
 
@@ -268,20 +269,20 @@ namespace ChatVadim
 
         private void chat_msg_TextChanged(object sender, EventArgs e)
         {
-            if (chat_msg.Text.Length>60 & chat_msg.Multiline==false)
-            {
-                chat_msg.Multiline = true;
-                chatBox.Height -= 50;
-                chat_msg.Height += 50;
-                chat_msg.Location = new Point(chat_msg.Location.X, chat_msg.Location.Y - 50);
-            }
-            if (chat_msg.Text.Length<60 & chat_msg.Multiline==true)
-            {
-                chat_msg.Multiline = false;
-                chat_msg.Location = new Point(chat_msg.Location.X, chat_msg.Location.Y + 50);
-                chat_msg.Height -= 50;
-                chatBox.Height += 50;
-            }
+            //if (chat_msg.Text.Length>60 & chat_msg.Multiline==false)
+            //{
+            //    //chat_msg.Multiline = true;
+            //    chatBox.Height -= 50;
+            //    chat_msg.Height += 50;
+            //    chat_msg.Location = new Point(chat_msg.Location.X, chat_msg.Location.Y - 50);
+            //}
+            //if (chat_msg.Text.Length<60 & chat_msg.Multiline==true)
+            //{
+            //    chat_msg.Multiline = false;
+            //    chat_msg.Location = new Point(chat_msg.Location.X, chat_msg.Location.Y + 50);
+            //    chat_msg.Height -= 50;
+            //    chatBox.Height += 50;
+            //}
         }
 
         private void chatBox_TextChanged(object sender, EventArgs e)
@@ -297,6 +298,18 @@ namespace ChatVadim
                 chatBox.Select(start + 1, end-start - 1);
                     chatBox.SelectionColor = Color.Green;
             }
+        }
+
+        private void exit_button_MouseEnter(object sender, EventArgs e)
+        {
+            exit_button.BackColor = Color.Red;
+            exit_button.ForeColor = Color.White;
+        }
+
+        private void exit_button_MouseLeave(object sender, EventArgs e)
+        {
+            exit_button.BackColor = Color.Gainsboro;
+            exit_button.ForeColor = SystemColors.ControlText;
         }
     }
 }
